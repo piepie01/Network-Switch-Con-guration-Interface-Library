@@ -8,9 +8,8 @@ from cisco import start
 from hp1820cli import sshhp
 
 if len(sys.argv) != 2:
-	print("http - Connect a switch through HTTP protocal")
-	print("Usage: http [user@]host")
-	print("(If not specified, username is admin.)")
+	print("[user@]host")
+	print("(If not specified, the username of hp is admin.)")
 	sys.exit(0)
 check = input("Cisco[c] or Hp[h]?")
 if check == "c":

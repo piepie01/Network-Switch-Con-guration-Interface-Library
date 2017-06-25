@@ -36,9 +36,10 @@ def showintstat(ssh,SwitchName):
 	index = 0
 	for element in output_list:
 		element = element[:-1]
-		if trunk[index].split(' ')[0] == element.split(' ')[0]:
-			element = element + '   ' + trunk[index].split(' ')[-1]
-			index = index + 1
+		if len(trunk)>0:
+			if trunk[index].split(' ')[0] == element.split(' ')[0]:
+				element = element + '   ' + trunk[index].split(' ')[-1]
+				index = index + 1
 		print (element)
 
 def showint(ssh,SwitchName):
@@ -159,7 +160,7 @@ def vlanset(ssh):
 		print ("Invalid interface")
 		return
 	ssh.sendline(list_s[0])
-	ssh.sendline(list_s[1]+interface)
+	ssh.sendline(list_s[1])
 	ssh.prompt(timeout=1)
 	output = ssh.before.decode('ascii')
 	if output.find("Incomplete") != -1 or output.find("Invalid") != -1:
@@ -245,8 +246,17 @@ def write(ssh):
 def ping(ssh, ipAddr, count, interval, size, SwitchName):
 	list_s = ['ping ip '+ipAddr+' repeat '+count+' timeout '+interval+' size '+size]
 	ssh.sendline(list_s[0])
-	ssh.prompt(timeout=1)
-	output = ssh.before.decode('ascii')
+	output = ""
+	index = 1
+	while "Success" not in output and "%" not in output:
+		if index % 2:
+			print ("            ",end='\r')
+			print ("ping....",end='\r')
+		else:
+			print ("pinging....",end='\r')
+		index = index + 1
+		ssh.prompt(timeout=0.5)
+		output = ssh.before.decode('ascii')
 	output = delete(output,list_s[0])
 	output = delete(output,SwitchName)
 	print (output)
@@ -262,7 +272,7 @@ def setportchannel(ssh):
 	ssh.sendline(list_s[3])
 	ssh.prompt(timeout=1)
 	output = ssh.before.decode('ascii')
-	print(output)
+	#print(output)
 	ssh.expect(r'.+')
 def clearportchannel(ssh):
 	channel = input("Enter port channel number:")
