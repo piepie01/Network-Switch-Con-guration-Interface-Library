@@ -2,7 +2,7 @@
 from pexpect import pxssh
 from getpass import getpass
 from cisco.lib import cli
-from cisco.lib import hpshell
+from cisco.lib import ciscoshell
 import sys
 import time
 import socket
@@ -55,4 +55,4 @@ def sshcisco(address):
 
 	ssh.sendline("terminal length 0")
 	SwitchName = cli.getSwitchName(ssh)
-	hpshell.run(ssh,password,SwitchName)
+	ciscoshell.run(ssh,password,SwitchName)

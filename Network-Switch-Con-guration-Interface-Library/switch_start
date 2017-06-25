@@ -4,7 +4,7 @@ import time
 from getpass import getpass
 import sys
 from cmd import Cmd
-from cisco import start
+from cisco import sshcisco
 from hp1820cli import sshhp
 
 if len(sys.argv) != 2:
@@ -13,6 +13,6 @@ if len(sys.argv) != 2:
 	sys.exit(0)
 check = input("Cisco[c] or Hp[h]?")
 if check == "c":
-	start.sshcisco(sys.argv[1])
+	sshcisco.sshcisco(sys.argv[1])
 else:
 	sshhp.hpswitch(sys.argv[1])
